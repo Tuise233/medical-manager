@@ -81,6 +81,7 @@ const login = (formEl: FormInstance | undefined) => {
 
       // 4.跳转到首页
       router.push(HOME_URL);
+      console.log("push home url", HOME_URL);
       ElNotification({
         title: getTimeState(),
         message: "欢迎登录 Geeker-Admin",
