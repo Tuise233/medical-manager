@@ -1,0 +1,68 @@
+.app-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .app-header {
+        width: 100%;
+        background-color: white;
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .app-search {
+            display: flex;
+            align-items: center;
+        }
+
+        .el-input {
+            width: 200px;
+            margin: 0 10px;
+        }
+    }
+
+    .app-content {
+        width: 100%;
+        flex-grow: 1;
+        margin-top: 10px;
+        background-color: white;
+        box-sizing: border-box;
+        padding: 10px;
+
+        .el-table {
+            width: 100%;
+            height: calc(100% - 40px);
+        }
+
+        .el-pagination {
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: 0;
+        }
+    }
+
+    .app-detail {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding: 10px;
+
+        >span:first-child {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        >span:last-child {
+            font-size: 12px;
+            color: rgb(166.2, 168.6, 173.4);
+        }
+
+        .el-button {
+            align-self: flex-end;
+        }
+    }
+}
