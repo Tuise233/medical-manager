@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { Announcement } from '@/api/interface/announce';
-import { deleteAnnouncement, getValidAnnouncement, updateAnnouncement } from '@/api/modules/announce';
+import { Announcement, CreateAnnounceDto } from '@/api/interface/announce';
+import { createAnnouncement, deleteAnnouncement, getValidAnnouncement, updateAnnouncement } from '@/api/modules/announce';
 import { ref, Ref, onMounted, nextTick } from 'vue';
 import PageDivider from '../../../components/PageDivider/index.vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -10,8 +10,10 @@ const pageSize = ref(15);
 const pageNum = ref(1);
 const total = ref(0);
 const searchValue = ref('');
-const showDialog = ref(false);
+const showCreateDialog = ref(false);
+const showEditDialog = ref(false);
 const editItem: Ref<Announcement | undefined> = ref<Announcement | undefined>();
+const createItem: Ref<CreateAnnounceDto | undefined> = ref<CreateAnnounceDto | undefined>();
 
 onMounted(async () => {
     await nextTick();
@@ -37,8 +39,17 @@ function handlePageSizeChange(size: number) {
 
 function edit(item: Announcement) {
     editItem.value = item;
-    showDialog.value = true;
+    showEditDialog.value = true;
 };
+
+function create() {
+    createItem.value = {
+        title: '',
+        description: '',
+        expire_date: new Date()
+    };
+    showCreateDialog.value = true;
+}
 
 function saveItem() {
     if(!editItem.value) return;
@@ -58,7 +69,7 @@ function saveItem() {
                 message: '保存成功',
                 type: 'success'
             });
-            showDialog.value = false;
+            showEditDialog.value = false;
             editItem.value = undefined;
             await nextTick();
             queryAnnouncement();
@@ -81,10 +92,37 @@ function deleteItem() {
         const result = await deleteAnnouncement(editItem.value.id);
         if(Number(result.code) === 200) {
             ElMessage.success('你成功删除这条公告');
-            showDialog.value = false;
+            showEditDialog.value = false;
             editItem.value = undefined;
             await nextTick();
             queryAnnouncement();
+        }
+    });
+}
+
+function createAnnounce() {
+    if(!createItem.value) return;
+    if(!createItem.value.title || !createItem.value.description || !createItem.value.expire_date) {
+        ElMessage.error('请完整填写创建新公告所需的字段');
+        return;
+    }
+    ElMessageBox.confirm(
+        '你确定要创建这条新公告?',
+        '创建新公告',
+        {
+            confirmButtonText: '创建',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }
+    ).then(async () => {
+        if(!createItem.value) return;
+        const result = await createAnnouncement(createItem.value);
+        if(Number(result.code) === 200) {
+            ElMessage.success('你成功创建了一条新公告');
+            showCreateDialog.value = false;
+            createItem.value = undefined;
+            await nextTick();
+            queryAnnouncement();    
         }
     });
 }
@@ -94,7 +132,7 @@ function deleteItem() {
 <template>
     <div class="app-page">
         <div class="app-header">
-            <el-button type="primary">创建新公告</el-button>
+            <el-button type="primary" @click="create">创建新公告</el-button>
             <PageDivider @page-size-change="handlePageSizeChange" />
         </div>
 
@@ -123,7 +161,30 @@ function deleteItem() {
             <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize" @change="handlePageChange" />
         </div>
 
-        <el-dialog v-model="showDialog" width="500" title="编辑公告">
+        <el-dialog v-model="showCreateDialog" width="500" title="创建新公告">
+            <div class="app-edit" v-if="createItem">
+                <div>
+                    <span>标题</span>
+                    <el-input type="text" placeholder="请输入标题" v-model="createItem.title"></el-input>
+                </div>
+
+                <div>
+                    <span>公告内容</span>
+                    <el-input type="textarea" :rows="5" placeholder="请输入公告内容" v-model="createItem.description"></el-input>
+                </div>
+
+                <div>
+                    <span>有效到期时间</span>
+                    <el-date-picker v-model="createItem.expire_date" type="datetime" placeholder="请选择有效到期时间"></el-date-picker>
+                </div>
+
+                <div class="app-button">
+                    <el-button type="primary" @click="createAnnounce">创建</el-button>
+                </div>
+            </div>
+        </el-dialog>
+
+        <el-dialog v-model="showEditDialog" width="500" title="编辑公告">
             <div class="app-edit" v-if="editItem">
                 <div>
                     <span>标题</span>

@@ -1,6 +1,6 @@
 import http from '@/api';
 import { ResPage, ResultData } from '../interface';
-import { Announcement } from '../interface/announce';
+import { Announcement, CreateAnnounceDto } from '../interface/announce';
 
 export async function getValidAnnouncement(pageSize: number, pageNum: number, searchValue: string, valid: boolean = true) {
     return http.get<ResPage<Announcement>>('announcement/valid', {
@@ -14,4 +14,8 @@ export async function updateAnnouncement(target: Announcement) {
 
 export async function deleteAnnouncement(id: number) {
     return http.post<ResultData<Announcement>>(`announcement/delete/${id}`, { loading: true });
+}
+
+export async function createAnnouncement(data: CreateAnnounceDto) {
+    return http.post<ResultData<Announcement>>(`announcement/new`, data, { loading: true });
 }

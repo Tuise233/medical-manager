@@ -5,3 +5,9 @@ export interface Announcement {
     create_date: Date;
     expire_date: Date;
 };
+
+export interface CreateAnnounceDto {
+    title: string;
+    description: string;
+    expire_date: Date;
+};
