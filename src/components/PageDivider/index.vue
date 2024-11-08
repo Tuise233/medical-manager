@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, defineEmits } from 'vue';
 
-const selectedSide = ref(10);
+const selectedSide = ref(15);
 const pageSizes = [5, 10, 15, 20];
 const emit = defineEmits<{
     (e: 'pageSizeChange', size: number): void

@@ -4,7 +4,7 @@ import { Announcement } from '../interface/announce';
 
 export async function getValidAnnouncement(pageSize: number, pageNum: number, searchValue: string, valid: boolean = true) {
     return http.get<ResPage<Announcement>>('announcement/valid', {
-        pageSize, pageNum, searchValue, valid
+        pageSize, pageNum, searchValue, type: (valid ? 'valid' : 'all')
     });
 }
 
