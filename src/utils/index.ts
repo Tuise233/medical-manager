@@ -284,3 +284,7 @@ export function findItemNested(enumData: any, callValue: any, value: string, chi
     if (current[children]) return findItemNested(current[children], callValue, value, children);
   }, null);
 }
+
+export const formatDate = (date: Date) => {
+  return new Date(date).toLocaleString();
+}; 

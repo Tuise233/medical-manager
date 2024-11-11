@@ -1,0 +1,55 @@
+.app-page {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .app-header {
+        width: 100%;
+        background-color: white;
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .app-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .el-input {
+                width: 200px;
+            }
+
+            .el-select {
+                width: 120px;
+            }
+        }
+    }
+
+    .app-content {
+        width: 100%;
+        flex-grow: 1;
+        margin-top: 10px;
+        background-color: white;
+        box-sizing: border-box;
+        padding: 10px;
+        border-radius: 5px;
+
+        .el-table {
+            width: 100%;
+            height: calc(100% - 40px);
+        }
+
+        .el-pagination {
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: 0;
+        }
+    }
+
+    .app-form {
+        padding: 20px;
+    }
+}
