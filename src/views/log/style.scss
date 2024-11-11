@@ -1,0 +1,63 @@
+.app-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        background-color: white;
+        border-radius: 5px;
+        padding: 10px;
+        box-sizing: border-box;
+
+        .app-search {
+            display: flex;
+            align-items: center;
+
+            .search-item {
+                display: flex;
+                align-items: center;
+                margin: 0 5px;
+
+                .el-input {
+                    width: 200px;
+                }
+
+                >span {
+                    margin-right: 10px;
+                }
+            }
+
+            .search-buttons {
+                display: flex;
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .app-content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        flex-grow: 1;
+        margin-top: 10px;
+        background-color: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-sizing: border-box;
+
+        .el-table {
+            width: 100%;
+            height: calc(100% - 40px);
+        }
+
+        .el-pagination {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+    }
+}
