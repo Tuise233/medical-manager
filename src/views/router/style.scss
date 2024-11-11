@@ -24,7 +24,24 @@
         border-radius: 5px;
         box-sizing: border-box;
         padding: 10px;
-        margin-top: 10px;
+        margin-top: 20px;
+        overflow-x: auto;
+
+        .el-table {
+            min-width: 1200px;
+        }
+
+        .el-input-number {
+            width: 100%;
+        }
+
+        .el-select {
+            width: 100%;
+        }
+
+        :deep(.el-table) {
+            width: 100% !important;
+        }
     }
 
     .app-create {

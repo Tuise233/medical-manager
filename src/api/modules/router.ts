@@ -14,3 +14,7 @@ export async function saveRouter(router: Router[]) {
 export async function createRouter(router: CreateRouterDto) {
     return http.post('/router/create', router, { loading: true });
 }
+
+export async function deleteRouter(id: number) {
+    return http.delete<any>(`/router/${id}`, {}, { loading: true });
+}
