@@ -39,55 +39,45 @@ Medical Manager 是一个基于 Vue3.3、TypeScript、Vite5、Pinia、Element-Pl
 ## 快速开始
 ```
 bash
-```
+
 克隆项目
-```
 git clone https://github.com/your-username/medical-manager.git
-```
+
 进入项目目录
-```
 cd medical-manager
-```
+
 安装依赖
-```
 pnpm install
-```
+
 启动项目
-```
 pnpm run dev
 ```
 
 ## 项目构建
 ```
 bash
-```
+
 构建开发环境
-```
 pnpm run build:dev
-```
+
 构建测试环境
-```
 pnpm run build:test
-```
+
 构建生产环境
-```
 pnpm run build:prod
 ```
 
 ## 代码检查
 ```
 bash
-```
+
 eslint 检查
-```
 pnpm run lint
-```
+
 stylelint 检查
-```
 pnpm run lint:style
-```
+
 prettier 检查
-```
 pnpm run prettier
 ```
 
@@ -127,4 +117,4 @@ medical-manager
 ## 联系作者
 
 - Email: 2039203690@qq.com
-- Github: [your-github](https://github.com/tuise233)
+- Github: [拉布拉马的Github](https://github.com/tuise233)
