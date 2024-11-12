@@ -12,6 +12,20 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        .app-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .el-input {
+                width: 200px;
+            }
+
+            .el-select {
+                width: 150px;
+            }
+        }
     }
 
     .app-content {
@@ -41,14 +55,15 @@
         padding: 10px;
         display: flex;
         flex-direction: column;
+        gap: 15px;
 
         >div {
             display: flex;
             flex-direction: column;
-            margin: 10px 0;
+            gap: 5px;
 
             >span {
-                margin-bottom: 5px;
+                font-weight: 500;
             }
         }
 
@@ -57,10 +72,7 @@
             align-self: flex-end;
             display: flex;
             align-items: center;
-
-            .el-button:last-child {
-                margin-left: 10px;
-            }
+            gap: 10px;
         }
     }
 }

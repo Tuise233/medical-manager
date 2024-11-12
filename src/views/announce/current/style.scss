@@ -16,11 +16,15 @@
         .app-search {
             display: flex;
             align-items: center;
-        }
+            gap: 10px;
 
-        .el-input {
-            width: 200px;
-            margin: 0 10px;
+            .el-input {
+                width: 200px;
+            }
+
+            .el-select {
+                width: 150px;
+            }
         }
     }
 
@@ -36,6 +40,12 @@
         .el-table {
             width: 100%;
             height: calc(100% - 40px);
+
+            .title-cell {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
         }
 
         .el-pagination {
@@ -52,14 +62,29 @@
         box-sizing: border-box;
         padding: 10px;
 
-        >span:first-child {
-            font-weight: bold;
-            font-size: 18px;
+        .detail-header {
+            margin-bottom: 20px;
+
+            .title {
+                display: block;
+                font-weight: bold;
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+            .info {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 12px;
+                color: #666;
+            }
         }
 
-        >span:last-child {
-            font-size: 12px;
-            color: rgb(166.2, 168.6, 173.4);
+        .detail-content {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            white-space: pre-wrap;
         }
 
         .el-button {
