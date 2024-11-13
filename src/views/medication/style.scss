@@ -1,0 +1,69 @@
+.app-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .table-search {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        background-color: white;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .el-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .el-input {
+                width: 200px;
+            }
+
+            .el-select {
+                width: 150px;
+            }
+        }
+    }
+
+    .el-table {
+        width: 100%;
+        background-color: white;
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding: 10px;
+        margin-top: 10px;
+        flex: 1;
+
+        .price-cell {
+            color: #f56c6c;
+            font-weight: bold;
+        }
+
+        .amount-cell {
+            color: #409eff;
+            font-weight: bold;
+        }
+    }
+
+    .el-pagination {
+        margin-top: 10px;
+        background-color: white;
+        border-radius: 5px;
+        padding: 10px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .el-dialog {
+        .el-form {
+            padding: 20px;
+
+            .el-form-item {
+                margin-bottom: 20px;
+            }
+        }
+    }
+}
