@@ -103,8 +103,8 @@ function getTypeLabel(type: AnnounceType) {
                 </el-table-column>
             </el-table>
 
-            <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
-                @change="handlePageChange" />
+            <el-pagination background layout="prev, pager, next" :total="total" :page-count="pageNum"
+                :page-size="pageSize" @change="handlePageChange" />
         </div>
 
         <el-dialog v-model="showDialog" width="500">

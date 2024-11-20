@@ -207,8 +207,8 @@ function getTypeLabel(type: AnnounceType) {
                 </el-table-column>
             </el-table>
 
-            <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
-                @current-change="handlePageChange" />
+            <el-pagination background layout="prev, pager, next" :total="total" :page-count="pageNum"
+                :page-size="pageSize" @current-change="handlePageChange" />
         </div>
 
         <el-dialog v-model="showCreateDialog" title="创建新公告" width="600">

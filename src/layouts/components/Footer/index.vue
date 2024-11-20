@@ -1,6 +1,6 @@
 <template>
   <div class="footer flx-center">
-    <a href="https://github.com/HalseySpicy" target="_blank"> 2022 © Geeker-Admin By Geeker Technology. </a>
+    <a href="https://github.com/HalseySpicy" target="_blank"> 2024 © 农村医疗信息管理系统 . </a>
   </div>
 </template>
 

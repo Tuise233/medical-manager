@@ -83,8 +83,8 @@ function resetSearch() {
                 </el-table-column>
             </el-table>
 
-            <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
-                @current-change="handlePageChange" />
+            <el-pagination background layout="prev, pager, next" :total="total" :page-count="pageNum"
+                :page-size="pageSize" @current-change="handlePageChange" />
         </div>
     </div>
 </template>

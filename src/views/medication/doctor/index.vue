@@ -96,7 +96,7 @@ function getStatusType(status: MedicationStatus): "success" | "danger" {
             </el-table-column>
             <el-table-column prop="amount" label="库存" width="120">
                 <template #default="scope">
-                    <span class="amount-cell">{{ scope.row.amount }}</span>
+                    <span class="amount-cell">{{ scope.row.amount }}件</span>
                 </template>
             </el-table-column>
             <el-table-column prop="category" label="类别" width="120">
