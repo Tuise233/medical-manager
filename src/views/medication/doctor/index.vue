@@ -47,6 +47,11 @@ async function queryMedications() {
     total.value = results.data.total;
 }
 
+function handlePageChange(curPage: number) {
+    pageNum.value = curPage;
+    queryMedications();
+}
+
 // 工具函数
 function getCategoryText(category: MedicationCategory) {
     return categoryOptions.find(item => item.value === category)?.label || "未知";
@@ -119,7 +124,7 @@ function getStatusType(status: MedicationStatus): "success" | "danger" {
         </el-table>
 
         <el-pagination background layout="prev, pager, next" :total="total" :page-size="pageSize"
-            @current-change="pageNum = $event" />
+            @current-change="handlePageChange" />
     </div>
 </template>
 
