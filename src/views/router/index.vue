@@ -17,7 +17,7 @@ const newData: Ref<CreateRouterDto | undefined> = ref<CreateRouterDto | undefine
 
 async function getRouter() {
     const results = await getAllRouter();
-    data.value = results.data;
+    data.value = results.data.sort((a, b) => a.index - b.index);
 }
 
 onMounted(async () => {
