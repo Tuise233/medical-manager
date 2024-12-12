@@ -5,14 +5,20 @@
     </div>
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item @click="openDialog('infoRef')">
-          <el-icon><User /></el-icon>个人信息
+        <!-- <el-dropdown-item @click="openDialog('infoRef')">
+          <el-icon>
+            <User />
+          </el-icon>个人信息
         </el-dropdown-item>
         <el-dropdown-item @click="openDialog('passwordRef')">
-          <el-icon><Edit /></el-icon>修改密码
-        </el-dropdown-item>
-        <el-dropdown-item divided @click="logout">
-          <el-icon><SwitchButton /></el-icon>退出登录
+          <el-icon>
+            <Edit />
+          </el-icon>修改密码
+        </el-dropdown-item> -->
+        <el-dropdown-item @click="logout">
+          <el-icon>
+            <SwitchButton />
+          </el-icon>退出登录
         </el-dropdown-item>
       </el-dropdown-menu>
     </template>
@@ -71,6 +77,7 @@ const openDialog = (ref: string) => {
   overflow: hidden;
   cursor: pointer;
   border-radius: 50%;
+
   img {
     width: 100%;
     height: 100%;

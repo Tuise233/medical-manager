@@ -1,3 +1,5 @@
+import { UserState } from "@/stores/interface";
+
 // 请求响应参数（不包含data）
 export interface Result {
   code: string;
@@ -38,6 +40,7 @@ export namespace Login {
   }
   export interface ResLogin {
     access_token: string;
+    userInfo: UserState['userInfo'];
   }
   export interface ResAuthButtons {
     [key: string]: string[];

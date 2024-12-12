@@ -1,6 +1,7 @@
 export interface AdminUser {
   id: number;
   username: string;
+  real_name?: string;
   email?: string;
   phone?: string;
   role: number;
@@ -26,6 +27,7 @@ export interface SearchUserParams {
 export interface CreateUserParams {
   username: string;
   password: string;
+  real_name: string;
   email?: string;
   phone?: string;
   role: number;
@@ -38,6 +40,7 @@ export interface AuditUserParams {
 
 export interface UpdateUserParams {
   username: string;
+  real_name: string;
   email: string;
   phone: string;
   role: number;

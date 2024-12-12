@@ -21,6 +21,7 @@ const formRef = ref<FormInstance>();
 const createForm = reactive<CreateUserParams>({
     username: "",
     password: "",
+    real_name: "",
     email: "",
     phone: "",
     role: 0
@@ -39,6 +40,7 @@ const showEditDialog = ref(false);
 const editingUserId = ref<number>();
 const editForm = reactive<UpdateUserParams>({
     username: "",
+    real_name: "",
     email: "",
     phone: "",
     role: 0
@@ -139,6 +141,7 @@ async function handleAudit() {
 function openEditDialog(row: AdminUser) {
     editingUserId.value = row.id;
     editForm.username = row.username || '';
+    editForm.real_name = row.real_name || '';
     editForm.email = row.email || '';
     editForm.phone = row.phone || '';
     editForm.role = row.role;
@@ -200,7 +203,7 @@ function getStatusText(status: number) {
         <div class="app-header">
             <div class="app-search">
                 <span>用户名</span>
-                <el-input v-model="searchValue" placeholder="请输入用户名/手机号" />
+                <el-input v-model="searchValue" placeholder="请输入用户名/姓名/手机号" />
                 <el-select v-model="searchRole" placeholder="角色" clearable>
                     <el-option v-for="item in roleOptions" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select>
@@ -217,6 +220,7 @@ function getStatusText(status: number) {
         <div class="app-content">
             <el-table :data="data" stripe>
                 <el-table-column prop="username" label="用户名"></el-table-column>
+                <el-table-column prop="real_name" label="姓名"></el-table-column>
                 <el-table-column prop="email" label="邮箱"></el-table-column>
                 <el-table-column prop="phone" label="手机号"></el-table-column>
                 <el-table-column label="角色">
@@ -256,6 +260,9 @@ function getStatusText(status: number) {
                 <el-form ref="formRef" :model="createForm" :rules="rules" label-width="80px">
                     <el-form-item label="用户名" prop="username">
                         <el-input v-model="createForm.username" placeholder="请输入用户名" />
+                    </el-form-item>
+                    <el-form-item label="真实姓名" prop="real_name">
+                        <el-input v-model="createForm.real_name" placeholder="请输入真实姓名" />
                     </el-form-item>
                     <el-form-item label="密码" prop="password">
                         <el-input v-model="createForm.password" type="password" placeholder="请输入密码" show-password />
@@ -307,6 +314,9 @@ function getStatusText(status: number) {
                 <el-form :model="editForm" label-width="80px">
                     <el-form-item label="用户名">
                         <el-input v-model="editForm.username" placeholder="请输入用户名" disabled />
+                    </el-form-item>
+                    <el-form-item label="用户名">
+                        <el-input v-model="editForm.real_name" placeholder="请输入真实姓名" />
                     </el-form-item>
                     <el-form-item label="邮箱">
                         <el-input v-model="editForm.email" placeholder="请输入邮箱" />
