@@ -1,17 +1,18 @@
 export interface AdminUser {
   id: number;
   username: string;
-  real_name?: string;
-  email?: string;
-  phone?: string;
+  real_name: string;
+  email: string;
+  phone: string;
   role: number;
   status: number;
   create_date: Date;
-  basicInfo?: {
-    id: number;
-    name?: string;
-    avatar?: string;
-  };
+  update_date: Date;
+}
+
+export interface Doctor {
+  id: number;
+  real_name: string;
 }
 
 export interface SearchUserParams {
@@ -44,4 +45,10 @@ export interface UpdateUserParams {
   email: string;
   phone: string;
   role: number;
+}
+
+export interface GetDoctorListResult {
+  code: number;
+  msg: string;
+  data: AdminUser[];
 }

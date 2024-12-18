@@ -1,6 +1,7 @@
 import http from "@/api";
-import { AdminUser, SearchUserParams, CreateUserParams, AuditUserParams, UpdateUserParams } from "../interface/admin";
+import { AdminUser, SearchUserParams, CreateUserParams, AuditUserParams, UpdateUserParams, Doctor } from "../interface/admin";
 import { ResPage, ResultData } from "../interface";
+import { GetDoctorListResult } from '../interface/admin';
 
 /**
  * @name 管理员模块
@@ -24,4 +25,8 @@ export const auditUser = (userId: number, params: AuditUserParams) => {
 // 添加更新用户的方法
 export const updateUser = (userId: number, params: UpdateUserParams) => {
     return http.put<void>(`/admin/users/${userId}`, params);
+};
+
+export const getDoctorList = () => {
+    return http.get<AdminUser[]>('/users/doctors');
 };

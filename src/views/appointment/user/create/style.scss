@@ -1,0 +1,40 @@
+.app-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+
+    .form-wrapper {
+        width: 100%;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+
+        h2 {
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--el-text-color-primary);
+        }
+
+        .el-form {
+
+            .el-select,
+            .el-date-picker {
+                width: 100%;
+            }
+
+            .duration-hint {
+                margin-left: 10px;
+                color: var(--el-text-color-secondary);
+            }
+        }
+
+        .el-form-item:last-child {
+            margin-bottom: 0;
+            text-align: right;
+        }
+    }
+}
