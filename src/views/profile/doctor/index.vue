@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { ElMessage, FormInstance } from 'element-plus';
-import { Appointment } from '@/api/interface/appointment';
-import { getAppointmentList } from '@/api/modules/appointment';
+import { ElMessage, ElMessageBox, FormInstance } from 'element-plus';
+import { Appointment, AppointmentStatus } from '@/api/interface/appointment';
+import { getAppointmentList, getAppointmentRecord, updateAppointmentRecord, deletePrescription } from '@/api/modules/appointment';
 import { getPatientList, getPatientProfile, updatePatientBasicInfo, updatePatientHealthInfo } from '@/api/modules/user';
 import StatusTag from '@/views/appointment/components/StatusTag.vue';
 import PageDivider from "@/components/PageDivider/index.vue";
 import { formatDate } from '@/utils';
 import { Gender, BloodType, AlcoholConsumption, BasicInfo, HealthInfo } from '@/api/interface/user';
+import { MedicalRecord } from '@/api/interface/medical-record';
+import { Prescription } from '@/api/interface/prescription';
+import { getMedicationList } from '@/api/modules/medication';
+import type { Medication } from '@/api/interface/medication';
 
 // 患者列表相关
 const patients = ref<any[]>([]);
@@ -24,7 +28,6 @@ const appointments = ref<Appointment[]>([]);
 // 预约详情相关
 const showAppointmentDetail = ref(false);
 const currentAppointment = ref<Appointment | null>(null);
-const medications = ref<any[]>([]);
 
 // 编辑基本信息相关
 const showBasicInfoDialog = ref(false);
@@ -64,6 +67,17 @@ const healthRules = {
     weight: [{ required: true, message: '请输入体重', trigger: 'blur' }],
     blood_type: [{ required: true, message: '请选择血型', trigger: 'change' }]
 };
+
+// 添加病历和医嘱相关的状态
+const medicalRecord = ref<MedicalRecord | null>(null);
+const prescriptions = ref<Prescription[]>([]);
+const isEditingRecord = ref(false);
+const isEditingPrescription = ref(false);
+const editingRecord = ref<Partial<MedicalRecord>>({});
+const editingPrescriptions = ref<Partial<Prescription>[]>([]);
+const medications = ref<Medication[]>([]);
+const medicationKeyword = ref('');
+const medicationLoading = ref(false);
 
 // 加载患者列表
 async function loadPatients() {
@@ -110,6 +124,8 @@ async function viewPatientDetail(patient: any) {
             appointments.value = appointmentRes.data.list;
         }
 
+
+
         showPatientDetail.value = true;
     } catch (error) {
         console.error(error);
@@ -117,10 +133,13 @@ async function viewPatientDetail(patient: any) {
     }
 }
 
-// 查看预约详情
-function viewAppointmentDetail(appointment: Appointment) {
+// 修改查看预约详情函数
+async function viewAppointmentDetail(appointment: Appointment) {
     currentAppointment.value = appointment;
     showAppointmentDetail.value = true;
+    if (appointment.status !== AppointmentStatus.Pending) {
+        await getMedicalRecordInfo(appointment.id);
+    }
 }
 
 function handleSearch() {
@@ -143,7 +162,8 @@ function resetSearch() {
     handleSearch();
 }
 
-onMounted(() => {
+onMounted((args: any) => {
+    console.log(args);
     loadPatients();
 });
 
@@ -258,6 +278,134 @@ function calculateAge(birthDate: string | Date) {
     }
 
     return age;
+}
+
+// 获取病历和医嘱信息
+async function getMedicalRecordInfo(appointmentId: number) {
+    try {
+        const result = await getAppointmentRecord(appointmentId);
+        if (Number(result.code) === 200) {
+            medicalRecord.value = result.data.record;
+            prescriptions.value = result.data.prescriptions;
+        }
+    } catch (error) {
+        console.error(error);
+        ElMessage.error('获取病历信息失败');
+    }
+}
+
+// 开始编辑病历
+function startEditRecord() {
+    editingRecord.value = { ...medicalRecord.value };
+    isEditingRecord.value = true;
+}
+
+// 开始编辑医嘱
+function startEditPrescription() {
+    editingPrescriptions.value = prescriptions.value.map(p => ({ ...p }));
+    isEditingPrescription.value = true;
+}
+
+// 取消编辑病历
+function cancelEditRecord() {
+    isEditingRecord.value = false;
+    editingRecord.value = {};
+}
+
+// 取消编辑医嘱
+function cancelEditPrescription() {
+    isEditingPrescription.value = false;
+    editingPrescriptions.value = [];
+}
+
+// 保存病历
+async function handleSaveRecord() {
+    if (!currentAppointment.value) return;
+
+    try {
+        await updateAppointmentRecord(currentAppointment.value.id, {
+            record: editingRecord.value,
+            prescriptions: prescriptions.value
+        });
+
+        ElMessage.success('病历保存成功');
+        isEditingRecord.value = false;
+        await getMedicalRecordInfo(currentAppointment.value.id);
+    } catch (error) {
+        console.error(error);
+        ElMessage.error('保存失败');
+    }
+}
+
+// 保存医嘱
+async function handleSavePrescription() {
+    if (!currentAppointment.value) return;
+
+    try {
+        await updateAppointmentRecord(currentAppointment.value.id, {
+            record: medicalRecord.value || {},
+            prescriptions: editingPrescriptions.value
+        });
+
+        ElMessage.success('医嘱保存成功');
+        isEditingPrescription.value = false;
+        await getMedicalRecordInfo(currentAppointment.value.id);
+    } catch (error) {
+        console.error(error);
+        ElMessage.error('保存失败');
+    }
+}
+
+// 添加医嘱
+function addPrescription() {
+    editingPrescriptions.value.push({
+        type: 0,
+        description: '',
+        frequency: '',
+        dosage: '',
+        duration: 1,
+        note: ''
+    });
+}
+
+// 删除医嘱
+async function removePrescription(index: number) {
+    if (!editingPrescriptions.value[index].id) {
+        editingPrescriptions.value.splice(index, 1);
+        return;
+    }
+
+    try {
+        await ElMessageBox.confirm('确定要删除这条医嘱吗？', '提示', {
+            type: 'warning'
+        });
+
+        const prescriptionId = editingPrescriptions.value[index].id!;
+        await deletePrescription(currentAppointment.value!.id, prescriptionId);
+
+        ElMessage.success('删除成功');
+        editingPrescriptions.value.splice(index, 1);
+    } catch (error) {
+        if (error !== 'cancel') {
+            console.error(error);
+            ElMessage.error('删除失败');
+        }
+    }
+}
+
+// 搜索药品
+async function searchMedications(keyword: string) {
+    medicationLoading.value = true;
+    try {
+        const res = await getMedicationList({
+            pageNum: 1,
+            pageSize: 20,
+            searchValue: keyword
+        });
+        medications.value = res.data.list;
+    } finally {
+        medicationLoading.value = false;
+    }
 }
 </script>
 
@@ -505,28 +653,53 @@ function calculateAge(birthDate: string | Date) {
                 </div>
 
                 <div class="section">
+                    <h3>病历信息</h3>
+                    <el-card class="medical-record" v-if="medicalRecord">
+                        <el-descriptions :column="1" border>
+                            <el-descriptions-item label="主诉">
+                                {{ medicalRecord.chief_complaint || '无' }}
+                            </el-descriptions-item>
+                            <el-descriptions-item label="现病史">
+                                {{ medicalRecord.present_illness || '无' }}
+                            </el-descriptions-item>
+                            <el-descriptions-item label="既往史">
+                                {{ medicalRecord.past_history || '无' }}
+                            </el-descriptions-item>
+                            <el-descriptions-item label="体格检查">
+                                {{ medicalRecord.physical_exam || '无' }}
+                            </el-descriptions-item>
+                            <el-descriptions-item label="诊断">
+                                {{ medicalRecord.diagnosis || '无' }}
+                            </el-descriptions-item>
+                            <el-descriptions-item label="治疗计划">
+                                {{ medicalRecord.treatment_plan || '无' }}
+                            </el-descriptions-item>
+                            <el-descriptions-item label="备注">
+                                {{ medicalRecord.note || '无' }}
+                            </el-descriptions-item>
+                        </el-descriptions>
+                    </el-card>
+                    <el-empty v-else description="暂无病历信息">
+                        暂无病历信息
+                    </el-empty>
+                </div>
+
+                <div class="section">
                     <h3>医嘱信息</h3>
-                    <div class="medical-advice">
-                        {{ '暂无医嘱信息' }}
-                    </div>
-                </div>
-
-                <div class="section">
-                    <h3>用药记录</h3>
-                    <el-table :data="medications" border stripe>
-                        <el-table-column prop="name" label="药品名称" />
-                        <el-table-column prop="dosage" label="用量" />
-                        <el-table-column prop="frequency" label="服用频率" />
-                        <el-table-column prop="duration" label="服用天数" />
-                        <el-table-column prop="notes" label="备注" show-overflow-tooltip />
-                    </el-table>
-                </div>
-
-                <div class="section">
-                    <h3>备注信息</h3>
-                    <div class="remarks">
-                        {{ '暂无备注信息' }}
-                    </div>
+                    <el-card v-if="prescriptions.length">
+                        <el-table :data="prescriptions" border stripe>
+                            <el-table-column prop="description" label="药品名称" min-width="120" />
+                            <el-table-column prop="dosage" label="用量" width="100" />
+                            <el-table-column prop="frequency" label="服用频率" width="120" />
+                            <el-table-column prop="duration" label="服用天数" width="100">
+                                <template #default="scope">
+                                    {{ scope.row.duration }}天
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="note" label="备注" min-width="150" show-overflow-tooltip />
+                        </el-table>
+                    </el-card>
+                    <el-empty v-else description="暂无医嘱信息" />
                 </div>
             </div>
         </el-dialog>

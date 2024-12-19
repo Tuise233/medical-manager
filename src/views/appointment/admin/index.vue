@@ -203,6 +203,11 @@ function canCancel(status: AppointmentStatus) {
                         {{ formatDate(scope.row.date_time) }}
                     </template>
                 </el-table-column>
+                <el-table-column label="创建时间" width="180">
+                    <template #default="scope">
+                        {{ formatDate(scope.row.create_date) }}
+                    </template>
+                </el-table-column>
                 <el-table-column prop="duration" label="时长" width="100">
                     <template #default="scope">
                         {{ scope.row.duration }}分钟
