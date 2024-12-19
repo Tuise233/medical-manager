@@ -12,6 +12,7 @@ import { MedicalRecord } from '@/api/interface/medical-record';
 import { Prescription } from '@/api/interface/prescription';
 import { getMedicationList } from '@/api/modules/medication';
 import type { Medication } from '@/api/interface/medication';
+import { exportFullMedicalRecord, ExportFormat } from '@/utils/export';
 
 // 患者列表相关
 const patients = ref<any[]>([]);
@@ -407,6 +408,64 @@ async function searchMedications(keyword: string) {
         medicationLoading.value = false;
     }
 }
+
+// 导出病历
+async function handleExport(patient: any) {
+    try {
+        // 弹出选择框
+        await ElMessageBox.confirm(
+            '请选择导出格式',
+            '导出病历',
+            {
+                confirmButtonText: 'Excel',
+                cancelButtonText: 'JSON',
+                distinguishCancelAndClose: true
+            }
+        ).then(
+            () => exportWithFormat(patient, ExportFormat.Excel),
+            (action) => {
+                if (action === 'cancel') {
+                    exportWithFormat(patient, ExportFormat.JSON);
+                }
+            }
+        );
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// 执行导出
+async function exportWithFormat(patient: any, format: ExportFormat) {
+    try {
+        const appointmentRes = await getAppointmentList({
+            pageNum: 1,
+            pageSize: 1000,
+            patient_id: patient.id
+        });
+
+        const appointments = appointmentRes.data.list;
+        const records: { [key: number]: { record: MedicalRecord, prescriptions: Prescription[] } } = {};
+
+        for (const appointment of appointments) {
+            if (appointment.status === AppointmentStatus.Completed) {
+                const recordRes = await getAppointmentRecord(appointment.id);
+                if (recordRes.data) {
+                    records[appointment.id] = {
+                        record: recordRes.data.record,
+                        prescriptions: recordRes.data.prescriptions
+                    };
+                }
+            }
+        }
+
+        exportFullMedicalRecord(patient, appointments, records, format);
+
+        ElMessage.success('导出成功');
+    } catch (error) {
+        console.error(error);
+        ElMessage.error('导出失败');
+    }
+}
 </script>
 
 <template>
@@ -449,10 +508,13 @@ async function searchMedications(keyword: string) {
                     </template>
                 </el-table-column>
                 <el-table-column prop="email" label="邮箱" min-width="200" show-overflow-tooltip />
-                <el-table-column label="操作" width="120" fixed="right">
+                <el-table-column label="操作" width="200" fixed="right">
                     <template #default="scope">
                         <el-button type="primary" link @click="viewPatientDetail(scope.row)">
                             查看详情
+                        </el-button>
+                        <el-button type="success" link @click="handleExport(scope.row)">
+                            导出数据
                         </el-button>
                     </template>
                 </el-table-column>
