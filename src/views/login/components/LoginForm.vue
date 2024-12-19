@@ -81,14 +81,17 @@ const login = (formEl: FormInstance | undefined) => {
       tabsStore.setTabs([]);
       keepAliveStore.setKeepAliveName([]);
 
-      // 4.跳转到首页
-      router.push(HOME_URL);
       ElNotification({
         title: getTimeState(),
         message: "欢迎登录",
         type: "success",
         duration: 3000
       });
+
+      setTimeout(() => {
+        // 4.跳转到首页
+        router.push(HOME_URL);
+      }, 2000);
     } finally {
       loading.value = false;
     }

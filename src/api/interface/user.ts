@@ -8,7 +8,7 @@ export enum UserStatus {
     Active = 0,
     Banned = 1,
     Pending = 2
-}
+};
 
 export enum Gender {
     Female = 0,

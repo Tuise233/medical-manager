@@ -13,7 +13,7 @@ export const updateAppointment = (id: number, params: UpdateAppointmentDto) => {
 };
 
 export const cancelAppointment = (id: number) => {
-    return http.post<Appointment>(`/appointments/${id}/cancel`);
+    return http.put<Appointment>(`/appointments/${id}/cancel`);
 };
 
 export const getAppointmentList = (params: SearchAppointmentParams) => {

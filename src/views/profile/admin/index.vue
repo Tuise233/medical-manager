@@ -61,9 +61,9 @@ const roleOptions = [
 ];
 
 const statusOptions = [
-    { label: "待审核", value: 0 },
-    { label: "正常", value: 1 },
-    { label: "禁用", value: 2 }
+    { label: "正常", value: 0 },
+    { label: "禁用", value: 1 },
+    { label: "待审核", value: 2 },
 ];
 
 // 初始化
@@ -172,9 +172,9 @@ function getRoleTagType(role: number): "success" | "warning" | "info" | "danger"
 
 function getStatusTagType(status: number): "success" | "warning" | "info" | "danger" {
     const map: Record<number, "success" | "warning" | "info" | "danger"> = {
-        0: "warning",
-        1: "success",
-        2: "danger"
+        0: "success",
+        1: "danger",
+        2: "warning",
     };
     return map[status] || "info";
 }
@@ -190,9 +190,9 @@ function getRoleText(role: number) {
 
 function getStatusText(status: number) {
     const map: Record<number, string> = {
-        0: "待审核",
-        1: "正常",
-        2: "禁用"
+        0: "正常",
+        1: "禁用",
+        2: "待审核",
     };
     return map[status] || "";
 }
