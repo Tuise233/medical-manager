@@ -91,7 +91,7 @@ const login = (formEl: FormInstance | undefined) => {
       setTimeout(() => {
         // 4.跳转到首页
         router.push(HOME_URL);
-      }, 2000);
+      }, 500);
     } finally {
       loading.value = false;
     }
